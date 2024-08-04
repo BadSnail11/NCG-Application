@@ -1,7 +1,13 @@
-import 'package:flutter/material.dart';
+import 'dart:developer';
 
-void main() {
-  runApp(const MyApp());
+import 'package:flutter/material.dart';
+import 'strapi.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+Future main() async{
+  await dotenv.load(fileName: ".env");
+  strapi();
+  // runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
