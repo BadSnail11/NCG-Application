@@ -1,10 +1,11 @@
 import 'dart:convert';
+import 'dart:js_interop';
 
 // List<Courier> CourierFromJson(String str) => List<Courier>.from(json.decode(str).map((x) => Courier.fromJson(x)));
 // List<Courier> CourierFromJson(String str) => (json.decode(str)["data"] as List<Map<String, dynamic>>).map((x) => Courier.fromJson(x)).toList();
 // List <Courier> CourierFromJson(String str) => List<Courier>.from((json.decode(str)["data"] as List<dynamic>).map((x) => Courier.fromJson(x)));
 
-List <Courier> CouriersFromJson(String str) {
+List <Courier> couriersFromJson(String str) {
   var js = json.decode(str)["data"];
   List <Courier> list = [];
   for (var element in js) {
@@ -12,6 +13,11 @@ List <Courier> CouriersFromJson(String str) {
     list.add(Courier.fromJson(data));
   }
   return list;
+}
+
+Courier singleCourierFromJson(String str) {
+  var js = json.decode(str)["data"];
+  return Courier.fromJson(js);
 }
 
 
@@ -49,4 +55,21 @@ class Courier {
     createdAt: DateTime.parse(json["attributes"]["createdAt"]),
     updatedAt: DateTime.parse(json["attributes"]["updatedAt"]),
   );
+
+  Object? toJson() {
+    Map<String, dynamic> json = {};
+    Map<String, dynamic> attributes = {};
+    attributes.addAll({
+      "firsrt_name": first_name,
+      "second_name": second_name,
+      "third_name": third_name,
+      "phone": phone,
+      "telegram_id": telegram_id,
+      "status": status,
+    });
+    json.addAll({
+      "data": attributes
+    });
+    return json;
+  }
 }
