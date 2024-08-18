@@ -9,6 +9,7 @@ class ApiService {
   final _defaultHeader = {"Authorization": "Bearer ${dotenv.get('accessToken')}",
   "Content-Type": "application/json",
   };
+  // final _params = "?"
 
   Future<List<Courier>?> getCouriers() async {
     try {
@@ -26,6 +27,7 @@ class ApiService {
       log(e.toString());
     }
   }
+
   Future<Courier?> getSingleCourier(int id) async {
     try {
       String unit = "/" + id.toString();
@@ -42,6 +44,7 @@ class ApiService {
       log(e.toString());
     }
   }
+
   Future<Courier?> updateCourier(Courier courier) async {
     try {
       String unit = "/" + courier.id.toString();
@@ -50,6 +53,23 @@ class ApiService {
       var response = await http.put(url, headers: _defaultHeader, body: jsonEncode(body));
       if (response.statusCode == 200) {
         return courier;
+      } else {
+        String error = jsonDecode(response.body)['error']['message'];
+        throw Exception(error);
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  Future<Courier?> createCourier(String firsrt_name, String second_name, String third_name, String phone, {String telegram_id = ""}) async {
+    try {
+      var url = Uri.parse(dotenv.get('baseUrl') + dotenv.get('couriersEndpoint'));
+      var body = newCourierInfo(firsrt_name, second_name, third_name, phone, telegram_id: telegram_id);
+      var response = await http.post(url, headers: _defaultHeader, body: jsonEncode(body));
+      if (response.statusCode == 200) {
+        Courier _model = singleCourierFromJson(response.body);
+        return _model;
       } else {
         String error = jsonDecode(response.body)['error']['message'];
         throw Exception(error);

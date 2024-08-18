@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:js_interop';
+// import 'dart:js_interop';
 
 // List<Courier> CourierFromJson(String str) => List<Courier>.from(json.decode(str).map((x) => Courier.fromJson(x)));
 // List<Courier> CourierFromJson(String str) => (json.decode(str)["data"] as List<Map<String, dynamic>>).map((x) => Courier.fromJson(x)).toList();
@@ -20,6 +20,28 @@ Courier singleCourierFromJson(String str) {
   return Courier.fromJson(js);
 }
 
+enum CoureirStatus {
+  sleeping,
+  dilivering,
+  free
+}
+
+Object newCourierInfo(String first_name, String second_name, String third_name, String phone, {String telegram_id = ""}) {
+  Map<String, dynamic> json = {};
+  Map<String, dynamic> attributes = {};
+  attributes.addAll({
+    "firsrt_name": first_name,
+    "second_name": second_name,
+    "third_name": third_name,
+    "phone": phone,
+    "telegram_id": telegram_id,
+    "status": "sleeping",
+  });
+  json.addAll({
+    "data": attributes
+  });
+  return json;
+}
 
 class Courier {
   Courier({

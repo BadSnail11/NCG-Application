@@ -8,9 +8,9 @@ import 'utils/server.dart' as serv;
 
 
 void strapi(){
-  var n = serv.ApiService();
+  var server = serv.ApiService();
   // final list = n.getCouriers();
-  final one = n.getSingleCourier(3);
+  // final one = server.getSingleCourier(3);
   // late Courier courier;
   // one.then((data) {
   //   courier = data!;
@@ -21,5 +21,12 @@ void strapi(){
   //   log(data!.status);
   // });
   // log(list.asStream().first.toString());
-  
+  // var info = newCourierInfo("Саня", "Тестовый", "Кура", "+123121231");
+  // final newCourier = server.createCourier("Саня", "Тестовый", "Кура", "+123121231");
+  final newCourier = server.getCouriers();
+  newCourier.then((data) {
+    for (Courier coureir in data!){
+      log(coureir.first_name);
+    }
+  });
 }
